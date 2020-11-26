@@ -1,12 +1,34 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Umgebungen umgibt unglaubliches
 
-Lesen Sie das ["Environments"](https://adv-r.hadley.nz/environments.html)-Kapitel aus *Advanced R Programming* aufmerksam durch. 
-
-Bearbeiten Sie die folgenden, teilweise von dort übernommenen Aufgaben:
 
 a) Inwiefern unterscheiden sich in R Listen (`list`) von `environment`s?
+
+Es gibt 4 wichtige Unterschiede:
+- alle Objekte haben unique Namen
+- sind nicht geordnet
+- haben eine Elternumgebung
+- reference semantics: enthalten nicht die Objekte selbst, sondern Zeiger auf die
+Speicherorte Objekte
+
 b) Wo suchen `ls()` und `rm()` wenn nicht explizit ein `environment` angegeben wird?
+
+In der aktuellen Umgebung, danach kettenweise in den Elternumgebungen (falls nicht
+`inherit = FALSE` gesetzt wurde, da in diesem Fall nicht in den Elternumgebungen
+gesucht wird)
+
+
 c) Wo legt `<-` eine (neue) `binding` an? Wo `<<-`?
+
+Bei `<-` eine `binding` in der aktuellen Umgebung angelegt. Bei `<<-` wird in den
+Elternumgebungen nach dem Namen der Variable gesucht. Falls die Variable in einer
+der Elternumgebungen existiert, wird dieser ein neuer Wert zugewiesen, wenn nicht,
+dann wird in dem Global Environment eine neue Variable angelegt (globale Zuweisung)
+
 d) Schreiben sie eine modifizierte Version `anywhere()` der Funktion `where()` aus dem `pryr`-Paket (**nicht** der im Buch definierten Funktion `where`), die *alle* Umgebungen im Suchpfad die eine Variable des gegebenen Namens enthalten in Form einer Liste zurückgibt. Überprüfen Sie ihre Implementation mit `test-env-anywhere.R`.
 
 ```{r, where}
@@ -14,5 +36,7 @@ pryr::where
 ```
 
 *Hinweis:* Die Funktion `to_env()`, die in `pryr::where()` benutzt wird wird nicht von `pryr` exportiert. Sie können die Funktion trotzdem mittels `pryr:::to_env()` aufrufen.
+
+-> Siehe `env-sol.R`
 
 
